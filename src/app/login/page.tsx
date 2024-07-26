@@ -1,19 +1,43 @@
 'use client'
 import Link from "next/link"
-import React from "react"
+import React, { useEffect } from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation" 
-import {axios} from "axios"
+import axios from "axios"
 
 
-export default function SignupPage() {
+export default function LoginPage() {
+  const router = useRouter()
   const [user, setUser] = useState({
     email: '',
     password: '',
   })
+  const [buttonDisabled, setButtonDisabled] = useState(true)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (user.email.length > 0 && user.password.length > 0) {
+      setButtonDisabled(false)
+    }
+    else {
+      setButtonDisabled(true)
+    }
+  }, [user])
 
   const onLogin = async () => {
-
+    try {
+      setLoading(true)
+      const response = await axios.post('/api/users/login', user)
+      console.log(response.data)
+      router.push(`/profile`)
+    }
+    catch (error: any) {
+      // implement toast error
+      console.log("Login failed" ,error.message)  
+    }
+    finally {
+      setLoading(false)
+    }
   }
 
 
