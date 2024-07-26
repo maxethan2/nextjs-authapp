@@ -4,6 +4,9 @@ import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation" 
 import axios from "axios"
 
+import { Button, Input } from "@nextui-org/react"
+import toast, { Toaster } from "react-hot-toast"
+
 
 export default function SignupPage() {
   const router = useRouter()
@@ -20,17 +23,20 @@ export default function SignupPage() {
   const onSignup = async () => {
     try {
       setLoading(true)
-      const response = axios.post("/api/users/signup", user)
-      console.log("Signup success", response)
-      router.push('/login')
+      const response = await axios.post("/api/users/signup", user)
+      console.log("Signup success", response.data)
+      router.push('/profile')
     }
     catch (error: any){
       // implement toast error here
       console.log('Signup Failed', error.message)
+      toast.error("Signup failed")
     }
     finally {
       setLoading(false)
     }
+    
+
   }
 
   useEffect(() => {
@@ -44,43 +50,46 @@ export default function SignupPage() {
 
 
   return (
-    <div  className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div  className="flex flex-col items-center justify-center min-h-screen py-2 w-64 m-auto">
+      <Toaster />
       <h1 className="">{!loading ? "Signup" : "Processing"}</h1>
       <hr />
-      <label htmlFor='username'>Username</label>
-      <input 
-        className="p-2 rounded-lg border border-gray-300 focus:outline-none text-black focus:border-blue-600"
-        id='username'
-        type='text'
-        value={user.username}
-        onChange={(event) => setUser({...user, username: event.target.value})}
-        placeholder="Username"
-      />
 
-      <label htmlFor='password'>Password</label>
-      <input 
-        className="p-2 rounded-lg border border-gray-300 focus:outline-none text-black focus:border-blue-600"
-        id='password'
-        type='password'
-        value={user.password}
-        onChange={(event) => setUser({...user, password: event.target.value})}
-        placeholder="Password"
-      />
-
-      <label htmlFor='email'>email</label>
-      <input 
-        className="p-2 rounded-lg border border-gray-300 focus:outline-none text-black focus:border-blue-600"
-        id='email'
-        type='text'
+      <Input 
+        type='email' 
+        label="Email" 
+        placeholder="Enter Your Email"
         value={user.email}
+        className="m-2"
         onChange={(event) => setUser({...user, email: event.target.value})}
-        placeholder="email"
       />
 
-      <button 
-          className="p-2 border border-gray-300 roundef-lg mb-4 bg-blue rounded-md m-2"
-          onClick={onSignup}
-      >{buttonDisabled ? "No signup" : "Signup Here"}</button>
+      <Input 
+        type='username' 
+        label="Username" 
+        placeholder="Enter Your Username"
+        value={user.username}
+        className="m-2"
+        onChange={(event) => setUser({...user, username: event.target.value})}
+      />
+
+      <Input 
+        type='password' 
+        label="Password" 
+        placeholder="Enter Your Password"
+        value={user.password}
+        className="m-2"
+        onChange={(event) => setUser({...user, password: event.target.value})}
+      />
+
+      <Button 
+        color='primary' 
+        isDisabled={buttonDisabled}
+        variant="bordered"
+        isLoading={loading}
+        onClick={onSignup}
+        className="my-3"
+      >SignUp</Button>
 
       <Link href='/login'>Visit Login Page</Link>
     </div>
