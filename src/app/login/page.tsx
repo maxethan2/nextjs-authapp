@@ -6,11 +6,14 @@ import { useRouter } from "next/navigation"
 import axios from "axios"
 
 import { Button, Input } from "@nextui-org/react"
+import { useTheme } from "next-themes"
 import toast, { Toaster } from "react-hot-toast"
 
 
 export default function LoginPage() {
   const router = useRouter()
+  const { theme, setTheme } = useTheme()
+
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -45,11 +48,11 @@ export default function LoginPage() {
 
 
   return (
-    <div  className="flex flex-col items-center justify-center min-h-screen py-2 m-auto bg-zinc-950">
+    <div  className="flex flex-col items-center justify-center min-h-screen py-2 m-auto">
 
       <Toaster />
 
-      <div className="bg-zinc-900 flex flex-col items-center justify-center max-h-screen p-6 rounded-lg border border-zinc-700">
+      <div className={`bg-danger-300 flex flex-col items-center justify-center max-h-screen p-6 rounded-lg border border-zinc-700`}>
 
         <h1 className="">Login</h1>
         <hr />
@@ -73,13 +76,13 @@ export default function LoginPage() {
         />
 
         <Button 
-          color='primary' 
+          color='default' 
           isDisabled={buttonDisabled}
-          variant="bordered"
+          variant="shadow"
           isLoading={loading}
           onClick={onLogin}
           className="my-3"
-        >SignUp</Button>
+        >Login</Button>
 
       </div>
 

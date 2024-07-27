@@ -5,11 +5,13 @@ import { useRouter } from "next/navigation"
 import axios from "axios"
 
 import { Button, Input } from "@nextui-org/react"
+import {useTheme} from "next-themes";
 import toast, { Toaster } from "react-hot-toast"
 
 
 export default function SignupPage() {
   const router = useRouter()
+  const { theme, setTheme } = useTheme()
 
   const [user, setUser] = useState({
     email: '',
@@ -50,11 +52,11 @@ export default function SignupPage() {
 
 
   return (
-    <div  className="flex flex-col items-center justify-center min-h-screen py-2 m-auto bg-zinc-950">
+    <div  className="flex flex-col items-center justify-center min-h-screen m-auto">
       <Toaster />
       
 
-      <div className="bg-zinc-900 flex flex-col items-center justify-center max-h-screen p-6 rounded-lg border border-zinc-700">
+      <div className={` bg-danger-300 flex flex-col items-center justify-center max-h-screen p-6 rounded-lg border border-zinc-700`}>
         <h1 className="">{!loading ? "Signup" : "Processing"}</h1>
         <hr />
 
@@ -86,9 +88,9 @@ export default function SignupPage() {
       />
 
       <Button 
-        color='primary' 
+        color='default'
         isDisabled={buttonDisabled}
-        variant="bordered"
+        variant="shadow"
         isLoading={loading}
         onClick={onSignup}
         className="my-3"
