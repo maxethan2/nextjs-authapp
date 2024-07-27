@@ -5,6 +5,9 @@ import { useState } from "react"
 import { useRouter } from "next/navigation" 
 import axios from "axios"
 
+import { Button, Input } from "@nextui-org/react"
+import toast, { Toaster } from "react-hot-toast"
+
 
 export default function LoginPage() {
   const router = useRouter()
@@ -28,12 +31,12 @@ export default function LoginPage() {
     try {
       setLoading(true)
       const response = await axios.post('/api/users/login', user)
-      console.log(response.data)
+      toast.success(`${response.data.message}`)
       router.push(`/profile`)
     }
     catch (error: any) {
       // implement toast error
-      console.log("Login failed" ,error.message)  
+      toast.error(`Login Failed: ${error.response.data.message}`)  
     }
     finally {
       setLoading(false)
@@ -42,34 +45,43 @@ export default function LoginPage() {
 
 
   return (
-    <div  className="flex flex-col items-center justify-center min-h-screen py-2">
-      <h1 className="">Login</h1>
-      <hr />
+    <div  className="flex flex-col items-center justify-center min-h-screen py-2 m-auto bg-zinc-950">
 
-      <label htmlFor='email'>email</label>
-      <input 
-        className="p-2 rounded-lg border border-gray-300 focus:outline-none text-black focus:border-blue-600"
-        id='email'
-        type='text'
-        value={user.email}
-        onChange={(event) => setUser({...user, email: event.target.value})}
-        placeholder="email"
-      />
+      <Toaster />
 
-      <label htmlFor='password'>Password</label>
-      <input 
-        className="p-2 rounded-lg border border-gray-300 focus:outline-none text-black focus:border-blue-600"
-        id='password'
-        type='password'
-        value={user.password}
-        onChange={(event) => setUser({...user, password: event.target.value})}
-        placeholder="Password"
-      />
+      <div className="bg-zinc-900 flex flex-col items-center justify-center max-h-screen p-6 rounded-lg border border-zinc-700">
 
-      <button 
-          className="p-2 border border-gray-300 roundef-lg mb-4 bg-blue rounded-md m-2"
+        <h1 className="">Login</h1>
+        <hr />
+
+        <Input 
+          type='email' 
+          label="Email" 
+          placeholder="Enter Your Email"
+          value={user.email}
+          className="m-2"
+          onChange={(event) => setUser({...user, email: event.target.value})}
+        />
+
+        <Input 
+          type='password' 
+          label="Password" 
+          placeholder="Enter Your Password"
+          value={user.password}
+          className="m-2"
+          onChange={(event) => setUser({...user, password: event.target.value})}
+        />
+
+        <Button 
+          color='primary' 
+          isDisabled={buttonDisabled}
+          variant="bordered"
+          isLoading={loading}
           onClick={onLogin}
-      >Login here</button>
+          className="my-3"
+        >SignUp</Button>
+
+      </div>
 
       <Link href='/signup'>Visit Signup Page</Link>
     </div>

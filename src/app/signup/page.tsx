@@ -15,6 +15,7 @@ export default function SignupPage() {
     email: '',
     password: '',
     username: ''
+    
   })
 
   const [buttonDisabled, setButtonDisabled] = useState(true)
@@ -24,13 +25,12 @@ export default function SignupPage() {
     try {
       setLoading(true)
       const response = await axios.post("/api/users/signup", user)
-      console.log("Signup success", response.data)
+      toast.success("Signup Success")
       router.push('/profile')
     }
     catch (error: any){
       // implement toast error here
-      console.log('Signup Failed', error.message)
-      toast.error("Signup failed")
+      toast.error(`Signup failed: ${error.response.data.error}`)
     }
     finally {
       setLoading(false)
@@ -50,10 +50,13 @@ export default function SignupPage() {
 
 
   return (
-    <div  className="flex flex-col items-center justify-center min-h-screen py-2 w-64 m-auto">
+    <div  className="flex flex-col items-center justify-center min-h-screen py-2 m-auto bg-zinc-950">
       <Toaster />
-      <h1 className="">{!loading ? "Signup" : "Processing"}</h1>
-      <hr />
+      
+
+      <div className="bg-zinc-900 flex flex-col items-center justify-center max-h-screen p-6 rounded-lg border border-zinc-700">
+        <h1 className="">{!loading ? "Signup" : "Processing"}</h1>
+        <hr />
 
       <Input 
         type='email' 
@@ -91,6 +94,8 @@ export default function SignupPage() {
         className="my-3"
       >SignUp</Button>
 
+      </div>
+      
       <Link href='/login'>Visit Login Page</Link>
     </div>
   )
