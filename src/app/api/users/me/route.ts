@@ -8,13 +8,24 @@ connect()
 
 export async function GET(request: NextRequest) {
   try {
-    const userID = await getToken(request)
-    const user = await User.findOne({_id: userID}).select('-password')
+    const decodedToken = await getToken(request)
+
+    if (decodedToken) {
+      const userID = decodedToken.id
+      const user = await User.findOne({_id: userID}).select('-password')
+
+      console.log("ape me", user)
+
+      return NextResponse.json({
+        message: 'User Found',
+        data: user
+      })
+    }
 
     return NextResponse.json({
-      message: 'User Found',
-      data: user
+      message: 'User Not Found'
     })
+
   }
   catch (error: any) {
     return NextResponse.json({error: error.message}, {status: 400})

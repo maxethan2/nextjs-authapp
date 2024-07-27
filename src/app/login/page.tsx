@@ -36,6 +36,7 @@ export default function LoginPage() {
       const response = await axios.post('/api/users/login', user)
       toast.success(`${response.data.message}`)
       router.push(`/profile`)
+      router.refresh()
     }
     catch (error: any) {
       // implement toast error
