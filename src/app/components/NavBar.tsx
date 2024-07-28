@@ -11,33 +11,41 @@ import {
   NavbarMenuItem
 } from "@nextui-org/navbar";
 import { Button } from "@nextui-org/react";
-import { useRouter } from "next/navigation" 
-
+import { useRouter, usePathname } from "next/navigation"; 
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 
 export default function NavBar() {
   const router = useRouter()
+  // pathname lets you read the current urls pathname (used to update useEffect everytime a path is changed)
+  const pathname = usePathname()
   const [data, setData] = useState<DecodedToken | undefined>(undefined)
 
+  // run everytime pathtime changes 
+  // get user data and set the new user data
   useEffect(() => {
     const getData = async () => {
-      const response = await axios.get('/api/users/me')
-      setData(response.data.data)
+      try {
+        const response = await axios.get('/api/users/me')
+        const userData = await response.data.data
+        setData(userData)
+      }
+      catch (error: any){
+        console.log(error.message)
+        setData(undefined)
+      }
     }
-
     getData()
-  }, [])
+  }, [pathname])
 
   const logout = async () => {
     try {
       const response = await axios.get('/api/users/logout')
       setData(undefined)
       toast.success('Logout Successful')
-      
       router.push('/login')
-      router.refresh()
+      // router.refresh()
     }
     catch (error: any){
       console.log(error.message)
@@ -50,11 +58,8 @@ export default function NavBar() {
       logout()
     }
     else {
-      // await router.refresh()
-      // router.push('/signup')
-      // router.prefetch('/signup')
       router.replace('/signup')
-      router.refresh()
+      // router.refresh()
     }
   }
 
@@ -90,6 +95,8 @@ export default function NavBar() {
             >
               {data ? "Logout" : "Signup"}
             </Button>
+
+            <button className="bg-blue-300" onClick={() => console.log(data)}>console log</button>
           </NavbarContent>
 
           <NavbarContent className="m-auto">

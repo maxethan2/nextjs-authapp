@@ -1,9 +1,11 @@
 'use client'
 import axios from "axios"
 import React, { useEffect, useState } from "react"
-import Link from "next/link"
+import { useRouter } from "next/navigation" 
+
 
 export default function ProfilePage() {
+  const router = useRouter()
   const [data, setData] = useState<DecodedToken>({
     id: "",
     username: '',
@@ -17,7 +19,6 @@ export default function ProfilePage() {
       const response = await axios.get('/api/users/me')
       setData(response.data.data)
     }
-
     getData()
   }, [])
 

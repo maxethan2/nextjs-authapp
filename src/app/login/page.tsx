@@ -3,6 +3,7 @@ import Link from "next/link"
 import React, { useEffect } from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation" 
+import clearCachesByServerAction from "@/helpers/clearCachesByServerAction"
 import axios from "axios"
 
 import { Button, Input } from "@nextui-org/react"
@@ -35,16 +36,18 @@ export default function LoginPage() {
       setLoading(true)
       const response = await axios.post('/api/users/login', user)
       toast.success(`${response.data.message}`)
+      clearCachesByServerAction('/profile')
       router.push(`/profile`)
-      router.refresh()
     }
     catch (error: any) {
       // implement toast error
+      console.log(error)
       toast.error(`Login Failed: ${error.response.data.message}`)  
     }
     finally {
       setLoading(false)
     }
+    router.refresh()
   }
 
 
