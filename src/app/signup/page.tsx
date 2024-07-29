@@ -28,7 +28,7 @@ export default function SignupPage() {
       setLoading(true)
       const response = await axios.post("/api/users/signup", user)
       toast.success("Signup Success")
-      router.push('/profile')
+      router.push('/login')
     }
     catch (error: any){
       // implement toast error here
@@ -52,7 +52,7 @@ export default function SignupPage() {
 
 
   return (
-    <div  className="flex flex-col items-center justify-center min-h-screen m-auto">
+    <div  className="flex flex-col items-center justify-center min-h-screen m-auto bg-default-50">
       <Toaster />
       
 

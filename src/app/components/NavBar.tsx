@@ -66,27 +66,14 @@ export default function NavBar() {
   return (
     <div  className="flex flex-col items-center justify-center">
       <Toaster />
-      <Navbar position="static" isBordered className='flex flex-row items-center justify-center'>
+      <Navbar position="static" isBordered className='flex flex-row items-center justify-center bg-default-100'>
 
         <NavbarContent>
-          bobfungus
+          { data?.username != undefined && `Hi ${data?.username}!`}
         </NavbarContent>
         
         <div className="flex flex-row">
           <NavbarContent className="mr-3">
-            {/* <Button 
-              color='danger'
-              variant="shadow"
-          
-              onClick={() => router.push('/signup')}
-            >Signup</Button>
-
-            <Button
-              color='danger'
-              variant="shadow"
-              onClick={logout}
-            >
-            Logout</Button> */}
 
             <Button
               color='danger'
@@ -96,7 +83,6 @@ export default function NavBar() {
               {data ? "Logout" : "Signup"}
             </Button>
 
-            <button className="bg-blue-300" onClick={() => console.log(data)}>console log</button>
           </NavbarContent>
 
           <NavbarContent className="m-auto">
